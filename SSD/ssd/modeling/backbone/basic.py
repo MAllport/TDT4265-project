@@ -12,6 +12,7 @@ class BasicModel(torch.nn.Module):
         self.output_channels = output_channels
         image_channels = cfg.MODEL.BACKBONE.INPUT_CHANNELS
         self.output_feature_size = cfg.MODEL.PRIORS.FEATURE_MAPS
+        print("\n\n\n") 
         
         #res 38x38
         self.bank1 =  nn.Sequential(
