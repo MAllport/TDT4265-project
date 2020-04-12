@@ -6,7 +6,7 @@ MODEL:
         OUT_CHANNELS: [128, 256, 128, 128, 64, 64]
         INPUT_CHANNELS: 3
 INPUT:
-    IMAGE_SIZE: 300
+    IMAGE_SIZE: (320,240)
 DATASETS:
     TRAIN: ("waymo_train",)
     TEST: ("waymo_val", )
@@ -16,5 +16,5 @@ SOLVER:
     GAMMA: 0.1
     BATCH_SIZE: 16
     LR: 1e-3
-OUTPUT_DIR: 'outputs/basic'
+OUTPUT_DIR: 'outputs/basic-image-transform'
 DATASET_DIR: "datasets"
