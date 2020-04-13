@@ -1,1 +1,17 @@
+.vscode
+__pycache__/
+.ipynb_checkpoints/
+.DS_Store
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.pyg
+*.synctex.gz
+mnist_detection/
+outputs/
+!outputs/*/tf_logs/*
+original_mnist/
 tags
+SSD/ssd/data/
