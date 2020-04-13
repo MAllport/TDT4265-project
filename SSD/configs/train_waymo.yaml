@@ -7,7 +7,6 @@ MODEL:
         #OUT_CHANNELS: [128, 256, 128, 128, 64, 64] # basic
         #OUT_CHANNELS: [512, 1024, 512, 256, 256, 256] # vgg
         #OUT_CHANNELS: [32,32,64,80,192,256,288,288,768,768,768,768,768,1280,2048,2048] # inception
-        #OUT_CHANNELS: [1024,512,512,256,256,256] # resnet50 (nei ikke egentlig?)
         OUT_CHANNELS: [64,64,64,64,256,512,1024] # resnet50
         INPUT_CHANNELS: 3
 INPUT:
@@ -17,10 +16,10 @@ DATASETS:
     TRAIN: ("waymo_train",)
     TEST: ("waymo_val", )
 SOLVER:
-    MAX_ITER: 120000
+    MAX_ITER: 30000
     LR_STEPS: [80000, 100000]
     GAMMA: 0.1
     BATCH_SIZE: 16
     LR: 1e-3
-OUTPUT_DIR: 'outputs/resnet50'
-DATASET_DIR: "datasets"
+OUTPUT_DIR: 'outputs/waymo_basic'
+DATASET_DIR: "/work/datasets"
