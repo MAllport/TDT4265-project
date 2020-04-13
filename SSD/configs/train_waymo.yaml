@@ -1,12 +1,17 @@
 MODEL:
     NUM_CLASSES: 5
     BACKBONE:
-        NAME: 'basic'
-        PRETRAINED: False
-        OUT_CHANNELS: [128, 256, 128, 128, 64, 64]
+        NAME: 'resnet50'
+        #PRETRAINED: False # basic and vgg
+        PRETRAINED: True # inception, resnet50
+        #OUT_CHANNELS: [128, 256, 128, 128, 64, 64] # basic
+        #OUT_CHANNELS: [512, 1024, 512, 256, 256, 256] # vgg
+        #OUT_CHANNELS: [32,32,64,80,192,256,288,288,768,768,768,768,768,1280,2048,2048] # inception
+        OUT_CHANNELS: [64,64,64,64,256,512,1024] # resnet50
         INPUT_CHANNELS: 3
 INPUT:
     IMAGE_SIZE: 300
+    #IMAGE_SIZE: 299 # Inception expects 299
 DATASETS:
     TRAIN: ("waymo_train",)
     TEST: ("waymo_val", )

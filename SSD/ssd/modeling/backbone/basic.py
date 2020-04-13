@@ -173,7 +173,6 @@ class BasicModel(torch.nn.Module):
         banklist = [self.bank2, self.bank3, self.bank4, self.bank5, self.bank6]
         self.banklist = nn.ModuleList(banklist)
 
-       
 
     def forward(self, x):
         out_features = []
@@ -183,7 +182,7 @@ class BasicModel(torch.nn.Module):
         x = self.bank1(x)
         for bank in self.banklist:
             x = bank(x)
-            out_features.append(x)
+            out_features.append(x)        
 
         for idx, feature in enumerate(out_features):
             expected_shape = (self.output_channels[idx], self.output_feature_size[idx], self.output_feature_size[idx])
