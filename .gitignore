@@ -11,6 +11,7 @@ __pycache__/
 *.synctex.gz
 mnist_detection/
 outputs/
+!outputs/*/tf_logs/*
 original_mnist/
 tags
 SSD/ssd/data/
