@@ -7,10 +7,21 @@ def build_transforms(cfg, is_train=True):
     if is_train:
         transform = [
             ConvertFromInts(),
+            SubtractMeans(cfg.INPUT.PIXEL_MEAN),
+            #ToAbsoluteCoords(),
             ToPercentCoords(),
             Resize(cfg.INPUT.IMAGE_SIZE),
-            SubtractMeans(cfg.INPUT.PIXEL_MEAN),
+            RandomSaturation(),
+            RandomHue(),
+            #RandomLightingNoise(),
+            #ConvertColor(),
+            RandomContrast(),
+            RandomBrightness(),
             ToTensor(),
+            #Expand(),
+            #RandomMirror(),
+            #SwapChannels(),
+            #PhotometricDistort(),
         ]
     else:
         transform = [
