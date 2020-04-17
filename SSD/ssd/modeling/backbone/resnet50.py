@@ -180,27 +180,15 @@ class Resnet50(torch.nn.Module):
             nn.Conv2d(
                 in_channels = self.output_channels[4],
                 out_channels = self.output_channels[5],
-                kernel_size=3,
+                kernel_size=(2,3),
                 stride=1,
                 padding=0
             )
         )
 
-
-        print("BANK 1")
-        print(self.bank1)
-        print("BANK 2")
-        print(self.bank2)
-        print("BANK 3")
-        print(self.bank3)
-        print("BANK 4")
-        print(self.bank4)
-        print("BANK 5")
-        print(self.bank5)
-        print("BANK 6")
-        print(self.bank6)
-
         self.feature_extractor = nn.ModuleList([self.bank1, self.bank2, self.bank3, self.bank4, self.bank5, self.bank6])
+
+        
 
     
 

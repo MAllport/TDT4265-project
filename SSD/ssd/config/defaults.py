@@ -16,11 +16,11 @@ cfg.MODEL.SIZE_VARIANCE = 0.2
 # Backbone
 # ---------------------------------------------------------------------------- #
 cfg.MODEL.BACKBONE = CN()
-cfg.MODEL.BACKBONE.NAME = 'vgg'
-cfg.MODEL.BACKBONE.OUT_CHANNELS = (512, 1024, 512, 256, 256, 256) # vgg
+cfg.MODEL.BACKBONE.NAME = 'resnet50'
+#cfg.MODEL.BACKBONE.OUT_CHANNELS = (512, 1024, 512, 256, 256, 256) # vgg
 #cfg.MODEL.BACKBONE.OUT_CHANNELS = (128, 256, 128, 128, 64, 64) # basic
 #cfg.MODEL.BACKBONE.OUT_CHANNELS = (32,32,64,80,192,256,288,288,768,768,768,768,768,1280,2048,2048) # inception
-#cfg.MODEL.BACKBONE.OUT_CHANNELS = (1024,512,512,256,256,256) # resnet50
+cfg.MODEL.BACKBONE.OUT_CHANNELS = (1024,512,512,256,256,128) # resnet50
 cfg.MODEL.BACKBONE.PRETRAINED = True
 cfg.MODEL.BACKBONE.INPUT_CHANNELS = 3
 
@@ -28,7 +28,7 @@ cfg.MODEL.BACKBONE.INPUT_CHANNELS = 3
 # PRIORS
 # -----------------------------------------------------------------------------
 cfg.MODEL.PRIORS = CN()
-cfg.MODEL.PRIORS.FEATURE_MAPS = [38, 19, 10, 5, 3, 1]
+cfg.MODEL.PRIORS.FEATURE_MAPS = [(30,40), (15,20), (8,10), (4,5), (2,3), (1,1)]
 cfg.MODEL.PRIORS.STRIDES = [8, 16, 32, 64, 100, 300]
 cfg.MODEL.PRIORS.MIN_SIZES = [30, 60, 111, 162, 213, 264]
 cfg.MODEL.PRIORS.MAX_SIZES = [60, 111, 162, 213, 264, 315]
@@ -50,7 +50,7 @@ cfg.MODEL.BOX_HEAD.PREDICTOR = 'SSDBoxPredictor'
 # -----------------------------------------------------------------------------
 cfg.INPUT = CN()
 # Image size
-cfg.INPUT.IMAGE_SIZE = (320,240)
+cfg.INPUT.IMAGE_SIZE = (240,320)
 # Values to be used for image normalization, RGB layout
 cfg.INPUT.PIXEL_MEAN = [123, 117, 104]
 

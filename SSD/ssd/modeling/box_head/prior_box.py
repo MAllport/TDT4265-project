@@ -5,8 +5,8 @@ from itertools import product
 
 class PriorBox:
     def __init__(self, cfg):
-        self.image_width  = cfg.INPUT.IMAGE_SIZE[0]
-        self.image_height = cfg.INPUT.IMAGE_SIZE[1]
+        self.image_width  = cfg.INPUT.IMAGE_SIZE[1]
+        self.image_height = cfg.INPUT.IMAGE_SIZE[0]
         prior_config = cfg.MODEL.PRIORS
         self.feature_maps = prior_config.FEATURE_MAPS
         self.min_sizes = prior_config.MIN_SIZES
@@ -26,7 +26,7 @@ class PriorBox:
         for k, f in enumerate(self.feature_maps):
             scale_x = self.image_width / self.strides[k]
             scale_y = self.image_height / self.strides[k]
-            for i, j in product(range(f), repeat=2):
+            for i, j in product(range(f[0]),range(f[1])):
                 # unit center x,y
                 cx = (j + 0.5) / scale_x
                 cy = (i + 0.5) / scale_y

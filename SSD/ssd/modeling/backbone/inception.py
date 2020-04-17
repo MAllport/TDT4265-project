@@ -86,6 +86,9 @@ class InceptionV3(nn.Module):
             x = bank(x)
             out_features.append(x)
             print("SIZE OF FEATURE: ", x.shape)
+        
+        for idx, feature in enumerate(out_features):
+	        print(feature.shape[1:])
 
 
         """
