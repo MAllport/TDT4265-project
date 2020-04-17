@@ -5,7 +5,8 @@ from itertools import product
 
 class PriorBox:
     def __init__(self, cfg):
-        self.image_size = cfg.INPUT.IMAGE_SIZE
+        self.image_width  = cfg.INPUT.IMAGE_SIZE[0]
+        self.image_height = cfg.INPUT.IMAGE_SIZE[1]
         prior_config = cfg.MODEL.PRIORS
         self.feature_maps = prior_config.FEATURE_MAPS
         self.min_sizes = prior_config.MIN_SIZES
@@ -23,25 +24,29 @@ class PriorBox:
         """
         priors = []
         for k, f in enumerate(self.feature_maps):
-            scale = self.image_size / self.strides[k]
+            scale_x = self.image_width / self.strides[k]
+            scale_y = self.image_height / self.strides[k]
             for i, j in product(range(f), repeat=2):
                 # unit center x,y
-                cx = (j + 0.5) / scale
-                cy = (i + 0.5) / scale
+                cx = (j + 0.5) / scale_x
+                cy = (i + 0.5) / scale_y
 
                 # small sized square box
                 size = self.min_sizes[k]
-                h = w = size / self.image_size
+                h = size / self.image_height
+                w = size / self.image_width
                 priors.append([cx, cy, w, h])
 
                 # big sized square box
                 size = sqrt(self.min_sizes[k] * self.max_sizes[k])
-                h = w = size / self.image_size
+                h = size / self.image_height
+                w = size / self.image_width
                 priors.append([cx, cy, w, h])
 
                 # change h/w ratio of the small sized box
                 size = self.min_sizes[k]
-                h = w = size / self.image_size
+                h = size / self.image_height
+                w = size / self.image_width
                 for ratio in self.aspect_ratios[k]:
                     ratio = sqrt(ratio)
                     priors.append([cx, cy, w * ratio, h / ratio])

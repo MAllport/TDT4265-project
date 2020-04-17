@@ -11,8 +11,7 @@ MODEL:
         OUT_CHANNELS: [1024,512,512,256,256,128] # Jennys resnet50 baby
         INPUT_CHANNELS: 3
 INPUT:
-    IMAGE_SIZE: 300
-    #IMAGE_SIZE: 299 # Inception expects 299
+    IMAGE_SIZE: (320,240)
 DATASETS:
     TRAIN: ("waymo_train",)
     TEST: ("waymo_val", )

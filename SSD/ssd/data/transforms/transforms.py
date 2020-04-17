@@ -112,13 +112,26 @@ class ToPercentCoords(object):
 
 
 class Resize(object):
-    def __init__(self, size=300):
-        self.size = size
+    def __init__(self, size):
+        self.width = size[0]
+        self.height = size[1]
 
-    def __call__(self, image, boxes=None, labels=None):
-        image = cv2.resize(image, (self.size,
-                                   self.size))
-        return image, boxes, labels
+    def __call__(self, image, boxes=None, labels=None,inp_dim=(320,320)):
+        img_w, img_h = self.width, self.height
+        w = inp_dim[0]
+        h = inp_dim[1]
+        new_w = int(img_w * min(w/img_w, h/img_h))
+        new_h = int(img_h * min(w/img_w, h/img_h))
+
+        resized_image = cv2.resize(image, (new_w,new_h), interpolation = cv2.INTER_CUBIC)
+
+        #create a black canvas    
+        canvas = np.full((inp_dim[1], inp_dim[0], 3), 128,dtype=float)
+    
+        #paste the image on the canvas
+        canvas[(h-new_h)//2:(h-new_h)//2 + new_h,(w-new_w)//2:(w-new_w)//2 + new_w,  :] = resized_image
+        new_image = cv2.resize(canvas,(300,300))
+        return new_image, boxes, labels
 
 
 class RandomSaturation(object):
