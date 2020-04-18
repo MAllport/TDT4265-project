@@ -131,58 +131,103 @@ class Resnet50(torch.nn.Module):
 
         # HELT BASIC EXTRA FEATURE LAYERS
         # out of bank2 -> 512 x 19 x 19
-        self.bank2 = nn.Sequential(
-            nn.ReLU(),
+        self.bank2 =  nn.Sequential(
+            nn.ReLU(), 
             nn.Conv2d(
-                in_channels = self.output_channels[0],
-                out_channels = self.output_channels[1],
+                in_channels=self.output_channels[0],
+                out_channels=256,
+                kernel_size=3,
+                stride=1,
+                padding=1
+            ),
+
+            nn.ReLU(), 
+            nn.Conv2d(
+                in_channels=256,
+                out_channels=self.output_channels[1],
                 kernel_size=3,
                 stride=2,
-                padding=1
+                padding=1 
             )
         )
         # out -> 512 x 10 x 10
-        self.bank3 = nn.Sequential(
-            nn.ReLU(),
+        self.bank3 =  nn.Sequential(
+            nn.ReLU(), 
             nn.Conv2d(
-                in_channels = self.output_channels[1],
-                out_channels = self.output_channels[2],
+                in_channels=self.output_channels[1], 
+                out_channels=512, 
+                kernel_size=3,
+                stride=1,
+                padding=1
+            ),
+
+            nn.ReLU(), 
+            nn.Conv2d(
+                in_channels=512, 
+                out_channels=self.output_channels[2], 
                 kernel_size=3,
                 stride=2,
-                padding=1
+                padding=1 
             )
         )
         # out -> 256 x 5 x 5
-        self.bank4 = nn.Sequential(
-            nn.ReLU(),
+        self.bank4 =  nn.Sequential(
+            nn.ReLU(), 
             nn.Conv2d(
-                in_channels = self.output_channels[2],
-                out_channels = self.output_channels[3],
+                in_channels=self.output_channels[2], 
+                out_channels=256, 
+                kernel_size=3,
+                stride=1,
+                padding=1
+            ),
+
+            nn.ReLU(), 
+            nn.Conv2d(
+                in_channels=256, 
+                out_channels=self.output_channels[3], 
                 kernel_size=3,
                 stride=2,
-                padding=1
+                padding=1 
             )
         )
         # out of bank5 -> 256 x 3 x 3
-        self.bank5 = nn.Sequential(
-            nn.ReLU(),
+        self.bank5 =  nn.Sequential(
+            nn.ReLU(), 
             nn.Conv2d(
-                in_channels = self.output_channels[3],
-                out_channels = self.output_channels[4],
+                in_channels=self.output_channels[3], 
+                out_channels=256, 
+                kernel_size=3,
+                stride=1,
+                padding=1
+            ),
+
+            nn.ReLU(), 
+            nn.Conv2d(
+                in_channels=256, 
+                out_channels=self.output_channels[4], 
                 kernel_size=3,
                 stride=2,
-                padding=1
+                padding=1 
             )
         )
         # out of bank6 -> 128 x 1 x 1
-        self.bank6 = nn.Sequential(
-            nn.ReLU(),
+        self.bank6 =  nn.Sequential(
+            nn.ReLU(), 
             nn.Conv2d(
-                in_channels = self.output_channels[4],
-                out_channels = self.output_channels[5],
+                in_channels=self.output_channels[4], 
+                out_channels=128, 
                 kernel_size=3,
                 stride=1,
-                padding=0
+                padding=1
+            ),
+
+            nn.ReLU(), 
+            nn.Conv2d(
+                in_channels=128, 
+                out_channels=self.output_channels[5], 
+                kernel_size=3,
+                stride=1,
+                padding=0 #LAST ONE
             )
         )
 

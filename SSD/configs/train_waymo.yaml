@@ -22,5 +22,5 @@ SOLVER:
     GAMMA: 0.1
     BATCH_SIZE: 16
     LR: 1e-3
-OUTPUT_DIR: 'outputs/w_res_randomTransforms'
+OUTPUT_DIR: 'outputs/w_res_extraConvRelus'
 DATASET_DIR: "datasets"
