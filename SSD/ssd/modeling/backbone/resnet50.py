@@ -135,7 +135,7 @@ class Resnet50(torch.nn.Module):
             nn.ReLU(), 
             nn.Conv2d(
                 in_channels=self.output_channels[0],
-                out_channels=256,
+                out_channels=512,
                 kernel_size=3,
                 stride=1,
                 padding=1
@@ -143,7 +143,7 @@ class Resnet50(torch.nn.Module):
 
             nn.ReLU(), 
             nn.Conv2d(
-                in_channels=256,
+                in_channels=512,
                 out_channels=self.output_channels[1],
                 kernel_size=3,
                 stride=2,
