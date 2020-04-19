@@ -40,15 +40,15 @@ class Resnet50(torch.nn.Module):
         # out of bank6 -> 128 x 1 x 1
 
         self.bank2 = nn.Sequential(
+            # nn.Conv2d(
+            #     in_channels = self.output_channels[0],
+            #     out_channels = channels[0],
+            #     kernel_size=1,
+            # ),
+            # nn.BatchNorm2d(channels[0]),
+            # nn.ReLU(),
             nn.Conv2d(
                 in_channels = self.output_channels[0],
-                out_channels = channels[0],
-                kernel_size=1,
-            ),
-            nn.BatchNorm2d(channels[0]),
-            nn.ReLU(),
-            nn.Conv2d(
-                in_channels = channels[0],
                 out_channels = self.output_channels[1],
                 kernel_size=3,
                 stride=2,
@@ -58,15 +58,15 @@ class Resnet50(torch.nn.Module):
             nn.ReLU(),
         )
         self.bank3 = nn.Sequential(
+            # nn.Conv2d(
+            #     in_channels = self.output_channels[1],
+            #     out_channels = channels[1],
+            #     kernel_size=1,
+            # ),
+            # nn.BatchNorm2d(channels[1]),
+            # nn.ReLU(),
             nn.Conv2d(
                 in_channels = self.output_channels[1],
-                out_channels = channels[1],
-                kernel_size=1,
-            ),
-            nn.BatchNorm2d(channels[1]),
-            nn.ReLU(),
-            nn.Conv2d(
-                in_channels = channels[1],
                 out_channels = self.output_channels[2],
                 kernel_size=3,
                 stride=2,
@@ -76,15 +76,15 @@ class Resnet50(torch.nn.Module):
             nn.ReLU(),
         )
         self.bank4 = nn.Sequential(
+            # nn.Conv2d(
+            #     in_channels = self.output_channels[2],
+            #     out_channels = channels[2],
+            #     kernel_size=1,
+            # ),
+            # nn.BatchNorm2d(channels[2]),
+            # nn.ReLU(),
             nn.Conv2d(
                 in_channels = self.output_channels[2],
-                out_channels = channels[2],
-                kernel_size=1,
-            ),
-            nn.BatchNorm2d(channels[2]),
-            nn.ReLU(),
-            nn.Conv2d(
-                in_channels = channels[2],
                 out_channels = self.output_channels[3],
                 kernel_size=3,
                 stride=2,
@@ -95,15 +95,15 @@ class Resnet50(torch.nn.Module):
         )
 
         self.bank5 = nn.Sequential(
+            # nn.Conv2d(
+            #     in_channels = self.output_channels[3],
+            #     out_channels = channels[3],
+            #     kernel_size=1,
+            # ),
+            # nn.BatchNorm2d(channels[3]),
+            # nn.ReLU(),
             nn.Conv2d(
                 in_channels = self.output_channels[3],
-                out_channels = channels[3],
-                kernel_size=1,
-            ),
-            nn.BatchNorm2d(channels[3]),
-            nn.ReLU(),
-            nn.Conv2d(
-                in_channels = channels[3],
                 out_channels = self.output_channels[4],
                 kernel_size=3,
                 stride=2,
@@ -114,15 +114,15 @@ class Resnet50(torch.nn.Module):
         )
 
         self.bank6 = nn.Sequential(
+            # nn.Conv2d(
+            #     in_channels = self.output_channels[4],
+            #     out_channels = channels[4],
+            #     kernel_size=1,
+            # ),
+            # nn.BatchNorm2d(channels[4]),
+            # nn.ReLU(),
             nn.Conv2d(
                 in_channels = self.output_channels[4],
-                out_channels = channels[4],
-                kernel_size=1,
-            ),
-            nn.BatchNorm2d(channels[4]),
-            nn.ReLU(),
-            nn.Conv2d(
-                in_channels = channels[4],
                 out_channels = self.output_channels[5],
                 kernel_size=3,
                 stride=2,
