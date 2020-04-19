@@ -130,9 +130,9 @@ class Resnet50(torch.nn.Module):
         """
 
         # HELT BASIC EXTRA FEATURE LAYERS
+        # +BATCHNORM and switched ReLU order
         # out of bank2 -> 512 x 19 x 19
         self.bank2 = nn.Sequential(
-            nn.ReLU(),
             nn.Conv2d(
                 in_channels = self.output_channels[0],
                 out_channels = self.output_channels[1],
@@ -140,21 +140,23 @@ class Resnet50(torch.nn.Module):
                 stride=2,
                 padding=1
             )
+            nn.ReLU(),
+            nn.BatchNorm2d(),
         )
         # out -> 512 x 10 x 10
         self.bank3 = nn.Sequential(
-            nn.ReLU(),
             nn.Conv2d(
                 in_channels = self.output_channels[1],
                 out_channels = self.output_channels[2],
                 kernel_size=3,
                 stride=2,
                 padding=1
-            )
+            ),
+            nn.ReLU(),
+            nn.BatchNorm2d(),
         )
         # out -> 256 x 5 x 5
         self.bank4 = nn.Sequential(
-            nn.ReLU(),
             nn.Conv2d(
                 in_channels = self.output_channels[2],
                 out_channels = self.output_channels[3],
@@ -162,10 +164,11 @@ class Resnet50(torch.nn.Module):
                 stride=2,
                 padding=1
             )
+            nn.ReLU(),
+            nn.BatchNorm2d(),
         )
         # out of bank5 -> 256 x 3 x 3
         self.bank5 = nn.Sequential(
-            nn.ReLU(),
             nn.Conv2d(
                 in_channels = self.output_channels[3],
                 out_channels = self.output_channels[4],
@@ -173,10 +176,11 @@ class Resnet50(torch.nn.Module):
                 stride=2,
                 padding=1
             )
+            nn.ReLU(),
+            nn.BatchNorm2d(),
         )
         # out of bank6 -> 128 x 1 x 1
         self.bank6 = nn.Sequential(
-            nn.ReLU(),
             nn.Conv2d(
                 in_channels = self.output_channels[4],
                 out_channels = self.output_channels[5],
@@ -184,6 +188,8 @@ class Resnet50(torch.nn.Module):
                 stride=1,
                 padding=0
             )
+            nn.ReLU(),
+            nn.BatchNorm2d(),
         )
 
 
