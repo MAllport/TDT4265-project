@@ -1,0 +1,22 @@
+MODEL:
+    NUM_CLASSES: 5
+    BACKBONE:
+        NAME: 'resnet50'
+        #OUT_CHANNELS: [64,64,64,64,256,512,1024] # resnet50
+        #OUT_CHANNELS: [1024,512,512,256,256,128] # Jennys resnet50 baby
+        OUT_CHANNELS: [1024,512,512,256,256,128] # resnet50 batchnorm
+        INPUT_CHANNELS: 3
+INPUT:
+    IMAGE_SIZE: 300
+    #IMAGE_SIZE: 299 # Inception expects 299
+DATASETS:
+    TRAIN: ("waymo_train",)
+    TEST: ("waymo_val", )
+SOLVER:
+    MAX_ITER: 30000
+    LR_STEPS: [80000, 100000]
+    GAMMA: 0.1
+    BATCH_SIZE: 16
+    LR: 1e-3
+OUTPUT_DIR: 'outputs/waymo_resnet_batchnorm'
+DATASET_DIR: "/work/datasets"
