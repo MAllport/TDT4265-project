@@ -14,10 +14,8 @@ class Resnet50(torch.nn.Module):
         # self.output_feature_size = cfg.MODEL.PRIORS.FEATURE_MAPS
         print("\n\n\n") 
         
-        # backbone = models.resnet50(pretrained=True)
-        backbone = models.resnext50_32x4d(pretrained=True)
+        backbone = models.resnet50(pretrained=True)
 
-        # out of bank1 -> 1024 x 38 x 38
         # source https://github.com/NVIDIA/DeepLearningExamples/blob/master/PyTorch/Detection/SSD/src/model.py
         self.bank1 = nn.Sequential(*list(backbone.children())[:7])
         conv4_block1 = self.bank1[-1][0]
@@ -25,63 +23,114 @@ class Resnet50(torch.nn.Module):
         conv4_block1.conv2.stride = (1,1)
         conv4_block1.downsample[0].stride = (1,1)
         
-        # HELT BASIC EXTRA FEATURE LAYERS
+        # EXTRA FEATURE LAYERS
+        # + BATCH NORM
+        # Consider bias=False
+        # Consider no extra 1x1 Conv
+        # Try changing order of relu and batchnorm
+        # How to print feature map dimensions resulting from conv and pooling?
+        
+        channels = [256, 256, 128, 128, 128]
+
+        # out of bank1 -> 1024 x 38 x 38
         # out of bank2 -> 512 x 19 x 19
+        # out of bank3 -> 512 x 10 x 10
+        # out of bank4 -> 256 x 5 x 5
+        # out of bank5 -> 256 x 3 x 3
+        # out of bank6 -> 128 x 1 x 1
+
         self.bank2 = nn.Sequential(
-            nn.ReLU(),
             nn.Conv2d(
                 in_channels = self.output_channels[0],
+                out_channels = channels[0],
+                kernel_size=1,
+            ),
+            nn.BatchNorm2d(channels[0]),
+            nn.ReLU(),
+            nn.Conv2d(
+                in_channels = channels[0],
                 out_channels = self.output_channels[1],
                 kernel_size=3,
                 stride=2,
                 padding=1
-            )
-        )
-        # out -> 512 x 10 x 10
-        self.bank3 = nn.Sequential(
+            ),
+            nn.BatchNorm2d(output_channels[1]),
             nn.ReLU(),
+        )
+        self.bank3 = nn.Sequential(
             nn.Conv2d(
                 in_channels = self.output_channels[1],
+                out_channels = channels[1],
+                kernel_size=1,
+            ),
+            nn.BatchNorm2d(channels[1]),
+            nn.ReLU(),
+            nn.Conv2d(
+                in_channels = channels[1],
                 out_channels = self.output_channels[2],
                 kernel_size=3,
                 stride=2,
                 padding=1
-            )
-        )
-        # out -> 256 x 5 x 5
-        self.bank4 = nn.Sequential(
+            ),
+            nn.BatchNorm2d(output_channels[2]),
             nn.ReLU(),
+        )
+        self.bank4 = nn.Sequential(
             nn.Conv2d(
                 in_channels = self.output_channels[2],
+                out_channels = channels[2],
+                kernel_size=1,
+            ),
+            nn.BatchNorm2d(channels[2]),
+            nn.ReLU(),
+            nn.Conv2d(
+                in_channels = channels[2],
                 out_channels = self.output_channels[3],
                 kernel_size=3,
                 stride=2,
                 padding=1
-            )
-        )
-        # out of bank5 -> 256 x 3 x 3
-        self.bank5 = nn.Sequential(
+            ),
+            nn.BatchNorm2d(output_channels[3]),
             nn.ReLU(),
+        )
+
+        self.bank5 = nn.Sequential(
             nn.Conv2d(
                 in_channels = self.output_channels[3],
+                out_channels = channels[3],
+                kernel_size=1,
+            ),
+            nn.BatchNorm2d(channels[3]),
+            nn.ReLU(),
+            nn.Conv2d(
+                in_channels = channels[3],
                 out_channels = self.output_channels[4],
                 kernel_size=3,
                 stride=2,
                 padding=1
-            )
-        )
-        # out of bank6 -> 128 x 1 x 1
-        self.bank6 = nn.Sequential(
+            ),
+            nn.BatchNorm2d(output_channels[4]),
             nn.ReLU(),
-            nn.Conv2d(
-                in_channels = self.output_channels[4],
-                out_channels = self.output_channels[5],
-                kernel_size=3,
-                stride=1,
-                padding=0
-            )
         )
 
+        self.bank6 = nn.Sequential(
+            nn.Conv2d(
+                in_channels = self.output_channels[4],
+                out_channels = channels[4],
+                kernel_size=1,
+            ),
+            nn.BatchNorm2d(channels[4]),
+            nn.ReLU(),
+            nn.Conv2d(
+                in_channels = channels[4],
+                out_channels = self.output_channels[5],
+                kernel_size=3,
+                stride=2,
+                padding=1
+            ),
+            nn.BatchNorm2d(output_channels[5]),
+            nn.ReLU(),
+        )
 
         print("BANK 1")
         print(self.bank1)
@@ -98,8 +147,6 @@ class Resnet50(torch.nn.Module):
 
         self.feature_extractor = nn.ModuleList([self.bank1, self.bank2, self.bank3, self.bank4, self.bank5, self.bank6])
 
-    
-
     def forward(self, x):
         
         out_features = []
@@ -108,11 +155,5 @@ class Resnet50(torch.nn.Module):
             x = feature(x)
             out_features.append(x)
 
-        """
-        for idx, feature in enumerate(out_features):
-            expected_shape = (out_channel, feature_map_size, feature_map_size)
-            assert feature.shape[1:] == expected_shape, \
-                f"Expected shape: {expected_shape}, got: {feature.shape[1:]} at output IDX: {idx}"
-        """
         return tuple(out_features)
         
