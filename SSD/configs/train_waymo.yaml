@@ -13,6 +13,7 @@ MODEL:
         # FEATURE_MAPS: [38, 19, 10, 5, 3, 1] # normal
         FEATURE_MAPS: [(30,40), (15,20), (8,10), (4,5), (2,3), (1,1)] # resized
 INPUT:
+    #IMAGE_SIZE: 300 # normal
     IMAGE_SIZE: (240,320)
 DATASETS:
     TRAIN: ("waymo_train",)
@@ -24,4 +25,4 @@ SOLVER:
     BATCH_SIZE: 16
     LR: 1e-3
 OUTPUT_DIR: 'outputs/resnet50-image-transform'
-DATASET_DIR: "datasets"
+DATASET_DIR: "/work/datasets"

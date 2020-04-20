@@ -14,3 +14,4 @@ SSD/outputs/**/*.pth
 original_mnist/
 tags
 SSD/ssd/data/
+datasets/
