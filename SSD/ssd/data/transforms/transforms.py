@@ -113,13 +113,15 @@ class ToPercentCoords(object):
 
 
 class Resize(object):
-    def __init__(self, size=300):
-        self.size = size
+    def __init__(self, size):
+        self.width = size[1]
+        self.height = size[0]
 
-    def __call__(self, image, boxes=None, labels=None):
-        image = cv2.resize(image, (self.size,
-                                   self.size))
-        return image, boxes, labels
+    def __call__(self, image, boxes=None, labels=None,inp_dim=(320,320)):
+
+        resized_image = cv2.resize(image, (self.width,self.height), interpolation = cv2.INTER_CUBIC)
+
+        return resized_image, boxes, labels
 
 
 class RandomSaturation(object):
@@ -211,11 +213,9 @@ class RandomBrightness(object):
             image += delta
         return image, boxes, labels
 
-
 class ToTensor(object):
     def __call__(self, cvimage, boxes=None, labels=None):
         return torch.from_numpy(cvimage.astype(np.float32)).permute(2, 0, 1), boxes, labels
-
 
 class RandomSampleCrop(object):
     """Crop
