@@ -22,5 +22,5 @@ SOLVER:
     GAMMA: 0.1
     BATCH_SIZE: 16
     LR: 1e-3
-OUTPUT_DIR: 'outputs/waymo_simple_resnet50'
+OUTPUT_DIR: 'outputs/waymo_photometric'
 DATASET_DIR: "datasets"
