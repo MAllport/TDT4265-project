@@ -139,9 +139,9 @@ class Resnet50(torch.nn.Module):
                 kernel_size=3,
                 stride=2,
                 padding=1
-            )
+            ),
             nn.ReLU(),
-            nn.BatchNorm2d(),
+            nn.BatchNorm2d(self.output_channels[1]),
         )
         # out -> 512 x 10 x 10
         self.bank3 = nn.Sequential(
@@ -153,7 +153,7 @@ class Resnet50(torch.nn.Module):
                 padding=1
             ),
             nn.ReLU(),
-            nn.BatchNorm2d(),
+            nn.BatchNorm2d(self.output_channels[2]),
         )
         # out -> 256 x 5 x 5
         self.bank4 = nn.Sequential(
@@ -163,9 +163,9 @@ class Resnet50(torch.nn.Module):
                 kernel_size=3,
                 stride=2,
                 padding=1
-            )
+            ),
             nn.ReLU(),
-            nn.BatchNorm2d(),
+            nn.BatchNorm2d(self.output_channels[3]),
         )
         # out of bank5 -> 256 x 3 x 3
         self.bank5 = nn.Sequential(
@@ -175,9 +175,9 @@ class Resnet50(torch.nn.Module):
                 kernel_size=3,
                 stride=2,
                 padding=1
-            )
+            ),
             nn.ReLU(),
-            nn.BatchNorm2d(),
+            nn.BatchNorm2d(self.output_channels[4]),
         )
         # out of bank6 -> 128 x 1 x 1
         self.bank6 = nn.Sequential(
@@ -187,9 +187,9 @@ class Resnet50(torch.nn.Module):
                 kernel_size=3,
                 stride=1,
                 padding=0
-            )
+            ),
             nn.ReLU(),
-            nn.BatchNorm2d(),
+            nn.BatchNorm2d(self.output_channels[5]),
         )
 
 
