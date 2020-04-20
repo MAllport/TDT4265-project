@@ -10,10 +10,9 @@ __pycache__/
 *.pyg
 *.synctex.gz
 mnist_detection/
-SSD/outputs/**/*.pth
+outputs/
 original_mnist/
 tags
 SSD/ssd/data/
 datasets/
 .envrc
-outputs/
