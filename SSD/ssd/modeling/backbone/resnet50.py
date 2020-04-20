@@ -17,7 +17,7 @@ class Resnet50(torch.nn.Module):
         
         backbone = models.resnet50(pretrained=True)
 
-        # out of bank1 -> 1024 x 38 x 38
+        # out of bank1 -> 1024 x 30 x 40
         # source https://github.com/NVIDIA/DeepLearningExamples/blob/master/PyTorch/Detection/SSD/src/model.py
         self.bank1 = nn.Sequential(*list(backbone.children())[:7])
         conv4_block1 = self.bank1[-1][0]
@@ -130,7 +130,7 @@ class Resnet50(torch.nn.Module):
         """
 
         # HELT BASIC EXTRA FEATURE LAYERS
-        # out of bank2 -> 512 x 19 x 19
+        # out of bank2 -> 512 x 15 x 20
         self.bank2 = nn.Sequential(
             nn.ReLU(),
             nn.Conv2d(
@@ -141,7 +141,7 @@ class Resnet50(torch.nn.Module):
                 padding=1
             )
         )
-        # out -> 512 x 10 x 10
+        # out -> 512 x 8 x 10
         self.bank3 = nn.Sequential(
             nn.ReLU(),
             nn.Conv2d(
@@ -152,7 +152,7 @@ class Resnet50(torch.nn.Module):
                 padding=1
             )
         )
-        # out -> 256 x 5 x 5
+        # out -> 256 x 4 x 5
         self.bank4 = nn.Sequential(
             nn.ReLU(),
             nn.Conv2d(
@@ -163,7 +163,7 @@ class Resnet50(torch.nn.Module):
                 padding=1
             )
         )
-        # out of bank5 -> 256 x 3 x 3
+        # out of bank5 -> 256 x 2 x 3
         self.bank5 = nn.Sequential(
             nn.ReLU(),
             nn.Conv2d(
@@ -180,29 +180,13 @@ class Resnet50(torch.nn.Module):
             nn.Conv2d(
                 in_channels = self.output_channels[4],
                 out_channels = self.output_channels[5],
-                kernel_size=3,
+                kernel_size=(2,3),
                 stride=1,
                 padding=0
             )
         )
 
-
-        print("BANK 1")
-        print(self.bank1)
-        print("BANK 2")
-        print(self.bank2)
-        print("BANK 3")
-        print(self.bank3)
-        print("BANK 4")
-        print(self.bank4)
-        print("BANK 5")
-        print(self.bank5)
-        print("BANK 6")
-        print(self.bank6)
-
         self.feature_extractor = nn.ModuleList([self.bank1, self.bank2, self.bank3, self.bank4, self.bank5, self.bank6])
-
-    
 
     def forward(self, x):
         
