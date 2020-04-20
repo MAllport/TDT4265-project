@@ -15,5 +15,5 @@ SOLVER:
     GAMMA: 0.1
     BATCH_SIZE: 16
     LR: 1e-2
-OUTPUT_DIR: 'outputs/waymo_resnet50_batchnorm'
+OUTPUT_DIR: 'outputs/waymo_resnet34'
 DATASET_DIR: "/work/datasets"
