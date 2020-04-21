@@ -16,3 +16,4 @@ tags
 SSD/ssd/data/
 datasets/
 .envrc
+*_outputs/
