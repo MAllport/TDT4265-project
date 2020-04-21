@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torchvision.models import resnet34
 
-def conv3x3(in_channels, out_channels, kernel_size=3, stride=1, padding=1):
+def conv3x3(in_channels, out_channels, kernel_size=3, stride=2, padding=1):
     return nn.Conv2d(in_channels, out_channels, kernel_size, stride, padding, bias=False)
 
 def relu():
@@ -40,62 +40,36 @@ class Resnet34(torch.nn.Module):
         
         # out of bank2 -> 512 x 15 x 20
         self.bank2 = nn.Sequential(
-            nn.Conv2d(
-                in_channels = self.output_channels[0],
-                out_channels = self.output_channels[1],
-                kernel_size=3,
-                stride=2,
-                padding=1
-            ),
-            nn.ReLU(),
+            conv3x3(self.output_channels[0], self.output_channels[1]),
+            relu()
             # nn.BatchNorm2d(self.output_channels[1]),
         )
         # out of bank3 -> 512 x 8 x 10
         self.bank3 = nn.Sequential(
-            nn.Conv2d(
-                in_channels = self.output_channels[1],
-                out_channels = self.output_channels[2],
-                kernel_size=3,
-                stride=2,
-                padding=1
-            ),
-            nn.ReLU(),
+            conv3x3(self.output_channels[1], self.output_channels[2]),
+            relu()
             # nn.BatchNorm2d(self.output_channels[2]),
         )
         # out -> 256 x 4 x 5
         self.bank4 = nn.Sequential(
-            nn.Conv2d(
-                in_channels = self.output_channels[2],
-                out_channels = self.output_channels[3],
-                kernel_size=3,
-                stride=2,
-                padding=1
-            ),
-            nn.ReLU(),
+            conv3x3(self.output_channels[2], self.output_channels[3]),
+            relu()
             # nn.BatchNorm2d(self.output_channels[3]),
         )
         # out of bank5 -> 256 x 2 x 3
         self.bank5 = nn.Sequential(
-            nn.Conv2d(
-                in_channels = self.output_channels[3],
-                out_channels = self.output_channels[4],
-                kernel_size=3,
-                stride=2,
-                padding=1
-            ),
-            nn.ReLU(),
+            conv3x3(self.output_channels[3], self.output_channels[4]),
+            relu()
             # nn.BatchNorm2d(self.output_channels[4]),
         )
         # out of bank6 -> 128 x 1 x 1
         self.bank6 = nn.Sequential(
-            nn.Conv2d(
-                in_channels = self.output_channels[4],
-                out_channels = self.output_channels[5],
+            conv3x3(self.output_channels[4], self.output_channels[5],
                 kernel_size=(2,3),
                 stride=1,
                 padding=0
             ),
-            nn.ReLU(),
+            relu()
             # nn.BatchNorm2d(self.output_channels[5]),
         )
 
