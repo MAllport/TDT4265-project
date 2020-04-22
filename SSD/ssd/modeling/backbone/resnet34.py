@@ -78,6 +78,14 @@ class Resnet34(nn.Module):
         #self.feature_extractor = nn.ModuleList([self.bank1, self.bank2, self.bank3, self.bank4, self.bank5, self.bank6])
         self.feature_extractor = nn.ModuleList([self.bank1_1, self.bank2, self.bank3, self.bank4, self.bank5, self.bank6])
     
+        # INITIALIZE PARAMETERS
+        # From https://github.com/pytorch/vision/blob/7b60f4db9707d7afdbb87fd4e8ef6906ca014720/torchvision/models/resnet.py#L160
+        for m in self.modules():
+            if isinstance(m, nn.Conv2d):
+                nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
+            elif isinstance(m, (nn.BatchNorm2d, nn.GroupNorm)):
+                nn.init.constant_(m.weight, 1)
+                nn.init.constant_(m.bias, 0)
     
 
     def forward(self, x):
