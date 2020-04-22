@@ -25,5 +25,5 @@ SOLVER:
     GAMMA: 0.1
     BATCH_SIZE: 16
     LR: 1e-3
-OUTPUT_DIR: 'outputs/slett'
-DATASET_DIR: "datasets"
+OUTPUT_DIR: 'outputs/wip34'
+DATASET_DIR: "/work/datasets"
