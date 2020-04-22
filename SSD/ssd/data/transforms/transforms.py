@@ -82,10 +82,11 @@ class ConvertFromInts(object):
 class SubtractMeans(object):
     def __init__(self, mean):
         self.mean = np.array(mean, dtype=np.float32)
+        self.std = np.array([0.229*255, 0.224*255, 0.225*255], dtype=np.float32)
 
     def __call__(self, image, boxes=None, labels=None):
         image = image.astype(np.float32)
-        image -= self.mean
+        image = (image - self.mean) / self.std
         return image.astype(np.float32), boxes, labels
 
 
