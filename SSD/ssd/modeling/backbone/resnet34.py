@@ -8,12 +8,7 @@ class Resnet34(torch.nn.Module):
     
     def __init__(self, cfg):
         super().__init__()
-        image_size = cfg.INPUT.IMAGE_SIZE
-        output_channels = cfg.MODEL.BACKBONE.OUT_CHANNELS
-        self.output_channels = output_channels
-        image_channels = cfg.MODEL.BACKBONE.INPUT_CHANNELS
-        self.output_feature_size = cfg.MODEL.PRIORS.FEATURE_MAPS
-        print("\n\n\n") 
+        self.output_channels = cfg.MODEL.BACKBONE.OUT_CHANNELS
         
         backbone = resnet34(pretrained=True)
 
@@ -87,36 +82,30 @@ class Resnet34(torch.nn.Module):
         )
 
 
-        print("BANK 1")
-        print(self.bank1)
-        print("BANK 2")
-        print(self.bank2)
-        print("BANK 3")
-        print(self.bank3)
-        print("BANK 4")
-        print(self.bank4)
-        print("BANK 5")
-        print(self.bank5)
-        print("BANK 6")
-        print(self.bank6)
+        # print("BANK 1")
+        # print(self.bank1)
+        # print("BANK 2")
+        # print(self.bank2)
+        # print("BANK 3")
+        # print(self.bank3)
+        # print("BANK 4")
+        # print(self.bank4)
+        # print("BANK 5")
+        # print(self.bank5)
+        # print("BANK 6")
+        # print(self.bank6)
 
         self.feature_extractor = nn.ModuleList([self.bank1, self.bank2, self.bank3, self.bank4, self.bank5, self.bank6])
 
-    
 
     def forward(self, x):
-        
         out_features = []
 
-        for feature in self.feature_extractor:
+        print("FORWARD:")
+        for level, feature in enumerate(self.feature_extractor):
             x = feature(x)
             out_features.append(x)
+            print("Level %d:" % level, x.shape)
 
-        """
-        for idx, feature in enumerate(out_features):
-            expected_shape = (out_channel, feature_map_size, feature_map_size)
-            assert feature.shape[1:] == expected_shape, \
-                f"Expected shape: {expected_shape}, got: {feature.shape[1:]} at output IDX: {idx}"
-        """
         return tuple(out_features)
         
