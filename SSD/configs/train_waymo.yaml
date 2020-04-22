@@ -21,9 +21,9 @@ DATASETS:
     TEST: ("waymo_val", )
 SOLVER:
     MAX_ITER: 20000
-    LR_STEPS: [80000, 100000]
+    LR_STEPS: [6000, 10000]
     GAMMA: 0.1
     BATCH_SIZE: 16
     LR: 1e-3
-OUTPUT_DIR: 'outputs/wip34'
+OUTPUT_DIR: 'outputs/wip34_lr_transform'
 DATASET_DIR: "/work/datasets"
