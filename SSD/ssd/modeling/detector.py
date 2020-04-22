@@ -3,6 +3,8 @@ from ssd.modeling.backbone.vgg import VGG
 from ssd.modeling.backbone.basic import BasicModel
 from ssd.modeling.backbone.inception import InceptionV3
 from ssd.modeling.backbone.resnet50 import Resnet50
+from ssd.modeling.backbone.resnet34 import Resnet34
+from ssd.modeling.backbone.efficientNet import EfficientNetModule
 from ssd.modeling.box_head.box_head import SSDBoxHead
 from ssd.utils.model_zoo import load_state_dict_from_url
 from ssd import torch_utils
@@ -41,6 +43,12 @@ def build_backbone(cfg):
         return model
     if backbone_name == "resnet50":
         model = Resnet50(cfg)
+        return model
+    if backbone_name == "resnet34":
+        model = Resnet34(cfg)
+        return model
+    if backbone_name == "efficientNet":
+        model = EfficientNetModule(cfg)
         return model
     if backbone_name == "vgg":
         model = VGG(cfg)
