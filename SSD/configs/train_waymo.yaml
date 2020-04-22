@@ -25,5 +25,6 @@ SOLVER:
     GAMMA: 0.1
     BATCH_SIZE: 16
     LR: 1e-3
-OUTPUT_DIR: 'outputs/wip34_lr_transform'
+    WARMUP_ITERS: 1500
+OUTPUT_DIR: 'outputs/wip34_mod'
 DATASET_DIR: "/work/datasets"
