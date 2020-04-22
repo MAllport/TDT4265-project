@@ -68,15 +68,15 @@ class Resnet34(nn.Module):
         print(self.bank5)
 
         # out 64 x 1 x 1
-        #bank6_0 = BasicBlockDownsample(inplanes=128,outplanes=64).basicBlock
-        bank6_1 = BasicBlock(inplanes=output_channels[4],outplanes=output_channels[5]).basicBlock
+        #bank6_0 = BasicBlockDownsample(inplanes=output_channels[4],outplanes=output_channels[5]).basicBlock
+        bank6_1 = LastBasicBlock(inplanes=output_channels[4],outplanes=output_channels[5]).basicBlock
         #self.bank6 = nn.Sequential(bank6_0,bank6_1)
         self.bank6 = bank6_1
         print("BANK 6")
         print(self.bank6)
      
         #self.feature_extractor = nn.ModuleList([self.bank1, self.bank2, self.bank3, self.bank4, self.bank5, self.bank6])
-        self.feature_extractor = nn.ModuleList([self.bank1_1, self.bank2, self.bank3])
+        self.feature_extractor = nn.ModuleList([self.bank1_1, self.bank2, self.bank3, self.bank4, self.bank5, self.bank6])
     
     
 
@@ -87,8 +87,8 @@ class Resnet34(nn.Module):
         for feature in self.feature_extractor:
             x = feature(x)
             out_features.append(x)
-            print("index " + str(idx))
-            print(x.shape)
+            #print("index " + str(idx))
+            #print(x.shape)
             idx +=1
 
         """
@@ -125,6 +125,42 @@ class BasicBlock(nn.Module):
                 out_channels = outplanes,
                 kernel_size=3,
                 stride=1,
+                padding=1
+            ),
+            nn.BatchNorm2d(
+                num_features=outplanes,
+                eps=1e-05,
+                momentum=0.1,
+                affine=True,
+                track_running_stats=True
+            ),
+        )
+
+class LastBasicBlock(nn.Module):
+
+    def __init__(self,inplanes,outplanes):
+        super(LastBasicBlock,self).__init__()
+        self.basicBlock = nn.Sequential(
+            nn.Conv2d(
+                in_channels = inplanes,
+                out_channels = outplanes,
+                kernel_size=3,
+                stride=2,
+                padding=1
+            ),
+            nn.BatchNorm2d(
+                num_features=outplanes,
+                eps=1e-05,
+                momentum=0.1,
+                affine=True,
+                track_running_stats=True
+            ),
+            nn.ReLU(),
+            nn.Conv2d(
+                in_channels = outplanes,
+                out_channels = outplanes,
+                kernel_size=3,
+                stride=2,
                 padding=1
             ),
             nn.BatchNorm2d(
