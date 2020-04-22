@@ -15,11 +15,11 @@ class Resnet34(nn.Module):
         self.output_channels = output_channels
         image_channels = cfg.MODEL.BACKBONE.INPUT_CHANNELS
         self.output_feature_size = cfg.MODEL.PRIORS.FEATURE_MAPS
-        print("\n\n\n") 
+        #print("\n\n\n") 
         
         backbone = models.resnet34(pretrained=True)
-        print("BACKBONE")
-        print(backbone)
+        #print("BACKBONE")
+        #print(backbone)
         self.bank1_0 = nn.Sequential(*list(backbone.children())[:6])
         
         self.bank1_1 = nn.Sequential(
@@ -35,45 +35,45 @@ class Resnet34(nn.Module):
         )
         
         # out 256 x 38 x 38
-        print("BANK 1")
-        print(self.bank1_1)
+        #print("BANK 1")
+        #print(self.bank1_1)
 
         # out 512 x 19 x 19
         self.bank2 = backbone.layer4
-        print("BANK 2")
-        print(self.bank2)
+        #print("BANK 2")
+        #print(self.bank2)
 
         # out 256 x 10 x 10
         #bank3_0 = BasicBlockDownsample(inplanes=512,outplanes=256).basicBlock
         bank3_1 = BasicBlock(inplanes=output_channels[1],outplanes=output_channels[2]).basicBlock
         #self.bank3 = nn.Sequential(bank3_0,bank3_1)
         self.bank3 = bank3_1
-        print("BANK 3")
-        print(self.bank3)
+        #print("BANK 3")
+        #print(self.bank3)
 
         # out 256 x 5 x 5
         #bank4_0 = BasicBlockDownsample(inplanes=256,outplanes=256).basicBlock
         bank4_1 = BasicBlock(inplanes=output_channels[2],outplanes=output_channels[3]).basicBlock
         #self.bank4 = nn.Sequential(bank4_0,bank4_1)
         self.bank4 = bank4_1
-        print("BANK 4")
-        print(self.bank4)
+        #print("BANK 4")
+        #print(self.bank4)
 
         # out 128 x 3 x 3
         #bank5_0 = BasicBlockDownsample(inplanes=256,outplanes=128).basicBlock
         bank5_1 = BasicBlock(inplanes=output_channels[3],outplanes=output_channels[4]).basicBlock
         #self.bank5 = nn.Sequential(bank5_0,bank5_1)
         self.bank5 = bank5_1
-        print("BANK 5")
-        print(self.bank5)
+        #print("BANK 5")
+        #print(self.bank5)
 
         # out 64 x 1 x 1
         #bank6_0 = BasicBlockDownsample(inplanes=output_channels[4],outplanes=output_channels[5]).basicBlock
         bank6_1 = LastBasicBlock(inplanes=output_channels[4],outplanes=output_channels[5]).basicBlock
         #self.bank6 = nn.Sequential(bank6_0,bank6_1)
         self.bank6 = bank6_1
-        print("BANK 6")
-        print(self.bank6)
+        #print("BANK 6")
+        #print(self.bank6)
      
         #self.feature_extractor = nn.ModuleList([self.bank1, self.bank2, self.bank3, self.bank4, self.bank5, self.bank6])
         self.feature_extractor = nn.ModuleList([self.bank1_1, self.bank2, self.bank3, self.bank4, self.bank5, self.bank6])
