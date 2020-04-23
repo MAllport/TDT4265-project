@@ -1,4 +1,6 @@
 # Hvordan organisere outputs
+Edit: lettere å bare bruke train_waymo.yaml som default config
+
 Når du kjører en trening du vil ta vare på: finn på et navn som beskriver det eksperimentet, lagre configfila du brukte som `configs/navn.yaml` og sett `OUTPUT_DIR` til det samme navnet, f.eks `configs/resnet50_pretrained_very_deep.yaml` og `outputs/resnet50_pretrained_very_deep`.
 
 Commit configfila sammen med/etter endringene i koden som du kjørte med, sånn at commiten som legger til denne configfila vil ha den versjonen av koden som du brukte til å trene. Kan evt. også gjøre `git tag <navn>` for å gjøre det lettere å finne senere.
