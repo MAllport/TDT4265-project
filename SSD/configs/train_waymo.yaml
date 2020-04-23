@@ -6,7 +6,8 @@ MODEL:
         #OUT_CHANNELS: [512, 1024, 512, 256, 256, 256] # vgg
         #OUT_CHANNELS: [64,64,64,64,256,512,1024] # resnet50
         #OUT_CHANNELS: [1024,512,512,256,256,128] # Jennys resnet50 baby
-        OUT_CHANNELS:  [256,512,256,256,128,64]
+        #OUT_CHANNELS:  [256,512,256,256,128,64] # old resnet34
+        OUT_CHANNELS:  [128,256,512,256,256,128]  # new resnet34
         INPUT_CHANNELS: 3
 INPUT:
     IMAGE_SIZE: 300
@@ -18,7 +19,7 @@ SOLVER:
     LR_STEPS: [80000, 100000]
     GAMMA: 0.1
     BATCH_SIZE: 16
-    LR: 1e-3
+    LR: 1e-2
     WARMUP_ITERS: 1500
-OUTPUT_DIR: 'outputs/master'
+OUTPUT_DIR: 'outputs/resnet34_expanded'
 DATASET_DIR: "/work/datasets"
