@@ -120,11 +120,11 @@ class Resnet34(torch.nn.Module):
     def forward(self, x):
         out_features = []
 
-        print("FORWARD:")
+        # print("FORWARD:")
         for level, feature in enumerate(self.feature_extractor):
             x = feature(x)
             out_features.append(x)
-            print("Level %d:" % level, x.shape)
+            # print("Level %d:" % level, x.shape)
 
         return tuple(out_features)
 
