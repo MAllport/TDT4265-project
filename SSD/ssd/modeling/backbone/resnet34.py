@@ -1,101 +1,120 @@
-import torch.nn as nn
 import torch
-import torchvision
+import torch.nn as nn
 import torch.nn.functional as F
 from torchvision.models import resnet34
+
+def conv3x3(in_planes, out_planes, stride=1, padding=1):
+    return nn.Conv2d(
+        in_planes,
+        out_planes,
+        kernel_size=3,
+        stride=stride,
+        padding=padding,
+        bias=False
+    )
+
+def conv1x1(in_planes, out_planes):
+    return nn.Conv2d(
+        in_planes,
+        out_planes,
+        kernel_size=1,
+        stride=2,
+        bias=False
+    )
+
+bnorm = nn.BatchNorm2d
+
+# class Identity(nn.Module):
+#     def __init__(self):
+#         super(Identity, self).__init__()
+        
+#     def forward(self, x):
+#         return x
+
+
+class BasicBlock(nn.Module):
+
+    def __init__(self, inplanes, planes, stride=1, downsample=None):
+        super(BasicBlock, self).__init__()
+        self.conv1      = conv3x3(inplanes, planes, stride)
+        self.bn1        = bnorm(planes)
+        self.relu       = nn.ReLU(inplace=True)
+        self.conv2      = conv3x3(planes, planes)
+        self.bn2        = bnorm(planes)
+        self.downsample = downsample
+
+    def forward(self, x):
+        identity = x
+
+        out = self.conv1(x)
+        out = self.bn1(out)
+        out = self.relu(out)
+
+        out = self.conv2(out)
+        out = self.bn2(out)
+
+        if self.downsample is not None:
+            identity = self.downsample(x)
+
+        out += identity
+        out = self.relu(out)
+
+        return out
+
 
 class Resnet34(torch.nn.Module):
     
     def __init__(self, cfg):
         super().__init__()
-        self.output_channels = cfg.MODEL.BACKBONE.OUT_CHANNELS
+        # (128,256,512,256,256,128)
+        self.out_channels = cfg.MODEL.BACKBONE.OUT_CHANNELS
+        self.inplanes = self.out_channels[2]
         
-        backbone = resnet34(pretrained=True)
+        resnet = resnet34(pretrained=True)
 
-        # out of bank1 -> 1024 x 38 x 38
-        # source https://github.com/NVIDIA/DeepLearningExamples/blob/master/PyTorch/Detection/SSD/src/model.py
-        self.bank1 = nn.Sequential(*list(backbone.children())[:7])
-        conv4_block1 = self.bank1[-1][0]
-        conv4_block1.conv1.stride = (1,1)
-        conv4_block1.conv2.stride = (1,1)
-        conv4_block1.downsample[0].stride = (1,1)
-        
-        # out of bank2 -> 512 x 19 x 19
-        self.bank2 = nn.Sequential(
-            nn.Conv2d(
-                in_channels = self.output_channels[0],
-                out_channels = self.output_channels[1],
-                kernel_size=3,
-                stride=2,
-                padding=1
-            ),
-            nn.ReLU(),
-            # nn.BatchNorm2d(self.output_channels[1]),
-        )
-        # out -> 512 x 10 x 10
-        self.bank3 = nn.Sequential(
-            nn.Conv2d(
-                in_channels = self.output_channels[1],
-                out_channels = self.output_channels[2],
-                kernel_size=3,
-                stride=2,
-                padding=1
-            ),
-            nn.ReLU(),
-            # nn.BatchNorm2d(self.output_channels[2]),
-        )
-        # out -> 256 x 5 x 5
-        self.bank4 = nn.Sequential(
-            nn.Conv2d(
-                in_channels = self.output_channels[2],
-                out_channels = self.output_channels[3],
-                kernel_size=3,
-                stride=2,
-                padding=1
-            ),
-            nn.ReLU(),
-            # nn.BatchNorm2d(self.output_channels[3]),
-        )
-        # out of bank5 -> 256 x 3 x 3
-        self.bank5 = nn.Sequential(
-            nn.Conv2d(
-                in_channels = self.output_channels[3],
-                out_channels = self.output_channels[4],
-                kernel_size=3,
-                stride=2,
-                padding=1
-            ),
-            nn.ReLU(),
-            # nn.BatchNorm2d(self.output_channels[4]),
-        )
-        # out of bank6 -> 128 x 1 x 1
+        # Skip maxpool
+        # resnet.maxpool = Identity()
+
+        # Extra stuff, probably unnecessary
+        # conv3x3(128, 128),
+        # bnorm(128)
+
+        # ResNet34 layers 1-4
+        self.bank1 = nn.Sequential(*list(resnet.children())[:6])
+        self.bank2 = resnet.layer3
+        self.bank3 = resnet.layer4
+
+        # Additional layers
+        self.bank4 = self._layer(self.out_channels[3])
+        self.bank5 = self._layer(self.out_channels[4])
         self.bank6 = nn.Sequential(
-            nn.Conv2d(
-                in_channels = self.output_channels[4],
-                out_channels = self.output_channels[5],
-                kernel_size=3,
-                stride=1,
-                padding=0
-            ),
-            nn.ReLU(),
-            # nn.BatchNorm2d(self.output_channels[5]),
+            self._layer(self.out_channels[5]),
+            conv3x3(self.out_channels[5], self.out_channels[5], stride=2),
+            bnorm(self.out_channels[5]),
+            nn.ReLU(inplace=True)
         )
 
+        self.feature_extractor = nn.ModuleList([
+            self.bank1,
+            self.bank2,
+            self.bank3,
+            self.bank4,
+            self.bank5,
+            self.bank6
+        ])
 
-        # print("BANK 1")
-        # print(self.bank1)
-        # print("BANK 2")
-        # print(self.bank2)
-        # print("BANK 3")
-        # print(self.bank3)
-        # print("BANK 4")
-        # print(self.bank4)
-        # print("BANK 5")
-        # print(self.bank5)
-        # print("BANK 6")
-        # print(self.bank6)
+        # Initialize parameters
+        for m in self.modules():
+            if isinstance(m, nn.Conv2d):
+                nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
+            elif isinstance(m, nn.BatchNorm2d):
+                nn.init.constant_(m.weight, 1)
+                nn.init.constant_(m.bias, 0)
 
-        self.feature_extractor = nn.ModuleList([self.bank1, self.bank2, self.bank3, self.bank4, self.bank5, self.bank6])
+        # Zero-initialize the last batch norm of each basic block
+        for m in self.modules():
+            if isinstance(m, BasicBlock):
+                nn.init.constant_(m.bn2.weight, 0)
 
 
     def forward(self, x):
@@ -108,4 +127,32 @@ class Resnet34(torch.nn.Module):
             print("Level %d:" % level, x.shape)
 
         return tuple(out_features)
-        
+
+
+    def _layer(self, planes):
+
+        downsample = nn.Sequential(
+            conv1x1(self.inplanes, planes),
+            bnorm(planes),
+        )
+
+        blocks = [
+            BasicBlock(
+                self.inplanes,
+                planes,
+                stride=2,
+                downsample=downsample,
+            ),
+            BasicBlock(
+                planes,
+                planes,
+                stride=1,
+                downsample=None
+            )
+        ]
+
+        # Set the number of input channels for the next layer
+        self.inplanes = planes
+
+        return nn.Sequential(*blocks)
+            

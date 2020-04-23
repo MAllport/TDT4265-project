@@ -20,7 +20,7 @@ class Resnet34(nn.Module):
         backbone = models.resnet34(pretrained=True)
         #print("BACKBONE")
         #print(backbone)
-        self.bank1_0 = nn.Sequential(*list(backbone.children())[:6])
+        # self.bank1_0 = nn.Sequential(*list(backbone.children())[:6])
         
         self.bank1_1 = nn.Sequential(
             *list(backbone.children())[:5],
