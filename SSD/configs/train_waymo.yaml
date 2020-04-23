@@ -18,7 +18,7 @@ SOLVER:
     LR_STEPS: [80000, 100000]
     GAMMA: 0.1
     BATCH_SIZE: 16
-    LR: 1e-2
+    LR: 1e-3
     WARMUP_ITERS: 1500
-OUTPUT_DIR: 'outputs/wip34_mod_lr_init'
+OUTPUT_DIR: 'outputs/wip34_mod_init'
 DATASET_DIR: "/work/datasets"
