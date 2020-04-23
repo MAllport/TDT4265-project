@@ -2,22 +2,16 @@ import torch.nn as nn
 import torch
 import torchvision
 import torch.nn.functional as F
-from torchvision import models
-from torchvision.models.resnet import BasicBlock
+from torchvision.models import resnet34
 
-class Resnet50(nn.Module):
+class Resnet34(torch.nn.Module):
     
     def __init__(self, cfg):
         super().__init__()
-        image_size = cfg.INPUT.IMAGE_SIZE
-        output_channels = cfg.MODEL.BACKBONE.OUT_CHANNELS
-        self.output_channels = output_channels
-        image_channels = cfg.MODEL.BACKBONE.INPUT_CHANNELS
-        self.output_feature_size = cfg.MODEL.PRIORS.FEATURE_MAPS
-        print("\n\n\n") 
+        self.output_channels = cfg.MODEL.BACKBONE.OUT_CHANNELS
         
-        backbone = models.resnet50(pretrained=True)
-        
+        backbone = resnet34(pretrained=True)
+
         # out of bank1 -> 1024 x 38 x 38
         # source https://github.com/NVIDIA/DeepLearningExamples/blob/master/PyTorch/Detection/SSD/src/model.py
         self.bank1 = nn.Sequential(*list(backbone.children())[:7])
@@ -25,10 +19,7 @@ class Resnet50(nn.Module):
         conv4_block1.conv1.stride = (1,1)
         conv4_block1.conv2.stride = (1,1)
         conv4_block1.downsample[0].stride = (1,1)
-        print(backbone)
-
-        # HELT BASIC EXTRA FEATURE LAYERS
-        # +BATCHNORM and switched ReLU order
+        
         # out of bank2 -> 512 x 19 x 19
         self.bank2 = nn.Sequential(
             nn.Conv2d(
@@ -39,7 +30,7 @@ class Resnet50(nn.Module):
                 padding=1
             ),
             nn.ReLU(),
-            nn.BatchNorm2d(self.output_channels[1]),
+            # nn.BatchNorm2d(self.output_channels[1]),
         )
         # out -> 512 x 10 x 10
         self.bank3 = nn.Sequential(
@@ -51,7 +42,7 @@ class Resnet50(nn.Module):
                 padding=1
             ),
             nn.ReLU(),
-            nn.BatchNorm2d(self.output_channels[2]),
+            # nn.BatchNorm2d(self.output_channels[2]),
         )
         # out -> 256 x 5 x 5
         self.bank4 = nn.Sequential(
@@ -63,7 +54,7 @@ class Resnet50(nn.Module):
                 padding=1
             ),
             nn.ReLU(),
-            nn.BatchNorm2d(self.output_channels[3]),
+            # nn.BatchNorm2d(self.output_channels[3]),
         )
         # out of bank5 -> 256 x 3 x 3
         self.bank5 = nn.Sequential(
@@ -75,7 +66,7 @@ class Resnet50(nn.Module):
                 padding=1
             ),
             nn.ReLU(),
-            nn.BatchNorm2d(self.output_channels[4]),
+            # nn.BatchNorm2d(self.output_channels[4]),
         )
         # out of bank6 -> 128 x 1 x 1
         self.bank6 = nn.Sequential(
@@ -87,43 +78,34 @@ class Resnet50(nn.Module):
                 padding=0
             ),
             nn.ReLU(),
-            nn.BatchNorm2d(self.output_channels[5]),
+            # nn.BatchNorm2d(self.output_channels[5]),
         )
-        
-        
-        print("BANK 1")
-        print(self.bank1)
-        print("BANK 2")
-        print(self.bank2)
-        print("BANK 3")
-        print(self.bank3)
-        print("BANK 4")
-        print(self.bank4)
-        print("BANK 5")
-        print(self.bank5)
-        print("BANK 6")
-        print(self.bank6)
-        
+
+
+        # print("BANK 1")
+        # print(self.bank1)
+        # print("BANK 2")
+        # print(self.bank2)
+        # print("BANK 3")
+        # print(self.bank3)
+        # print("BANK 4")
+        # print(self.bank4)
+        # print("BANK 5")
+        # print(self.bank5)
+        # print("BANK 6")
+        # print(self.bank6)
+
         self.feature_extractor = nn.ModuleList([self.bank1, self.bank2, self.bank3, self.bank4, self.bank5, self.bank6])
-    
-    
+
 
     def forward(self, x):
-        
         out_features = []
-        idx=0
-        for feature in self.feature_extractor:
+
+        print("FORWARD:")
+        for level, feature in enumerate(self.feature_extractor):
             x = feature(x)
             out_features.append(x)
-            print("index " + str(idx))
-            print(x.shape)
-            idx +=1
+            print("Level %d:" % level, x.shape)
 
-        """
-        for idx, feature in enumerate(out_features):
-            expected_shape = (out_channel, feature_map_size, feature_map_size)
-            assert feature.shape[1:] == expected_shape, \
-                f"Expected shape: {expected_shape}, got: {feature.shape[1:]} at output IDX: {idx}"
-        """
         return tuple(out_features)
-
+        
