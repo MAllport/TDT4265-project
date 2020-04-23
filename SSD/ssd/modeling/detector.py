@@ -46,6 +46,9 @@ def build_backbone(cfg):
     if backbone_name == "resnet50":
         model = Resnet50(cfg)
         return model
+    if backbone_name == "resnet34":
+        model = Resnet34(cfg)
+        return model
     if backbone_name == "vgg":
         model = VGG(cfg)
         if cfg.MODEL.BACKBONE.PRETRAINED:

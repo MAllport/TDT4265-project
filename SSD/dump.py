@@ -6,6 +6,7 @@ from ssd.modeling.detector import SSDDetector
 cfg.MODEL.BACKBONE.NAME = 'resnet34'
 cfg.INPUT.IMAGE_SIZE = 300
 cfg.MODEL.BACKBONE.OUT_CHANNELS = (256,512,512,256,256,128) # resnet34
+# cfg.MODEL.BACKBONE.OUT_CHANNELS = (256,512,256,256,128,64) # wip34
 cfg.MODEL.PRIORS.FEATURE_MAPS = [38, 19, 10, 5, 3, 1]
 cfg.SOLVER.MAX_ITER = 120000
 cfg.SOLVER.LR_STEPS = [80000, 100000]
@@ -21,8 +22,7 @@ for level, bank in enumerate(model.backbone.feature_extractor):
     bank_n = level+1
     print("Bank %d:" % bank_n, bank)
 
-max_iter = cfg.SOLVER.MAX_ITER
-data_loader = make_data_loader(cfg, is_train=True, max_iter=max_iter)
+data_loader = make_data_loader(cfg, is_train=True, max_iter=cfg.SOLVER.MAX_ITER)
 
 images, targets, _ = next(iter(data_loader)) # 1 batch
 outputs = model(images, targets=targets)
