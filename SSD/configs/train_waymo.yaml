@@ -2,19 +2,13 @@ MODEL:
     NUM_CLASSES: 5
     BACKBONE:
         NAME: 'resnet50'
-        PRETRAINED: True # only affects vgg
         #OUT_CHANNELS: [128, 256, 128, 128, 64, 64] # basic
         #OUT_CHANNELS: [512, 1024, 512, 256, 256, 256] # vgg
-        #OUT_CHANNELS: [32,32,64,80,192,256,288,288,768,768,768,768,768,1280,2048,2048] # inception
         #OUT_CHANNELS: [64,64,64,64,256,512,1024] # resnet50
         OUT_CHANNELS: [1024,512,512,256,256,128] # Jennys resnet50 baby
         INPUT_CHANNELS: 3
-      PRIORS:
-        # FEATURE_MAPS: [38, 19, 10, 5, 3, 1] # normal
-        FEATURE_MAPS: [(30,40), (15,20), (8,10), (4,5), (2,3), (1,1)] # resized
 INPUT:
-    #IMAGE_SIZE: 300 # normal
-    IMAGE_SIZE: (240,320)
+    IMAGE_SIZE: 300 # normal
 DATASETS:
     TRAIN: ("waymo_train",)
     TEST: ("waymo_val", )
@@ -24,5 +18,5 @@ SOLVER:
     GAMMA: 0.1
     BATCH_SIZE: 16
     LR: 1e-3
-OUTPUT_DIR: 'outputs/resnet50-image-transform'
+OUTPUT_DIR: 'outputs/master'
 DATASET_DIR: "/work/datasets"
