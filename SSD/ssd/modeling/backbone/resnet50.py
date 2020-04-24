@@ -76,7 +76,8 @@ class Resnet50(nn.Module):
             nn.Conv2d(
                 in_channels = self.output_channels[4],
                 out_channels = self.output_channels[5],
-                kernel_size=3,
+                # kernel_size=3,
+                kernel_size=(2,3),
                 stride=1,
                 padding=0
             ),
