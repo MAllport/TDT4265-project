@@ -6,8 +6,9 @@ from .transforms import *
 def build_transforms(cfg, is_train=True):
     if is_train:
         transform = [
+            RandomCrop(),
+            RandomMirror(),
             ConvertFromInts(),
-            # RandomMirror(),
             ToPercentCoords(),
             Resize(cfg.INPUT.IMAGE_SIZE),
             SubtractMeans(cfg.INPUT.PIXEL_MEAN),
