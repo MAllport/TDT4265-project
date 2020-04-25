@@ -7,16 +7,16 @@ def build_transforms(cfg, is_train=True):
     if is_train:
         transform = [
             ConvertFromInts(),
-            ToPercentCoords(),
             # RandomMirror(),
-            Resize(cfg.INPUT.IMAGE_SIZE),
+            ToPercentCoords(),
             SubtractMeans(cfg.INPUT.PIXEL_MEAN),
+            Resize(cfg.INPUT.IMAGE_SIZE),
             ToTensor(),
         ]
     else:
         transform = [
-            Resize(cfg.INPUT.IMAGE_SIZE),
             SubtractMeans(cfg.INPUT.PIXEL_MEAN),
+            Resize(cfg.INPUT.IMAGE_SIZE),
             ToTensor()
         ]
     transform = Compose(transform)
