@@ -5,7 +5,7 @@ from ssd.modeling.detector import SSDDetector
 # config
 cfg.MODEL.BACKBONE.NAME = 'resnet34'
 # cfg.INPUT.IMAGE_SIZE = 300
-cfg.INPUT.IMAGE_SIZE = (240,320)
+cfg.INPUT.IMAGE_SIZE = (480,640)
 cfg.MODEL.BACKBONE.OUT_CHANNELS = (128,256,512,256,256,128) # resnet34
 # cfg.MODEL.PRIORS.FEATURE_MAPS = [38, 19, 10, 5, 3, 1]
 cfg.MODEL.PRIORS.FEATURE_MAPS = [(30,40), (15,20), (8,10), (4,5), (2,3), (1,1)]
