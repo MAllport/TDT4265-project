@@ -9,14 +9,14 @@ def build_transforms(cfg, is_train=True):
             ConvertFromInts(),
             # RandomMirror(),
             ToPercentCoords(),
-            SubtractMeans(cfg.INPUT.PIXEL_MEAN),
             Resize(cfg.INPUT.IMAGE_SIZE),
+            SubtractMeans(cfg.INPUT.PIXEL_MEAN),
             ToTensor(),
         ]
     else:
         transform = [
-            SubtractMeans(cfg.INPUT.PIXEL_MEAN),
             Resize(cfg.INPUT.IMAGE_SIZE),
+            SubtractMeans(cfg.INPUT.PIXEL_MEAN),
             ToTensor()
         ]
     transform = Compose(transform)
