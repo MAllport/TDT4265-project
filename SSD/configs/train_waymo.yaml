@@ -1,7 +1,7 @@
 MODEL:
     NUM_CLASSES: 5
     BACKBONE:
-        NAME: 'resnet34'
+        NAME: 'resnet50'
         # OUT_CHANNELS:  [1024,256,512,256,256,128]  # resnet50_wide (Jenny sin conf?)
         OUT_CHANNELS:  [1024,512,512,256,256,128]  # resnet50_wide (512 på nr 2)
         INPUT_CHANNELS: 3
