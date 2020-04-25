@@ -16,7 +16,7 @@ class Resnet50(nn.Module):
         self.output_feature_size = cfg.MODEL.PRIORS.FEATURE_MAPS
         print("\n\n\n") 
         
-        backbone = models.resnet50(pretrained=True)
+        backbone = models.resnext50_32x4d(pretrained=True)
         
         # out of bank1 -> 1024 x 38 x 38
         # source https://github.com/NVIDIA/DeepLearningExamples/blob/master/PyTorch/Detection/SSD/src/model.py

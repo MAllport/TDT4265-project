@@ -16,7 +16,7 @@ if __name__ == "__main__":
     new_dir = checkpoint.parent.parent
     new_dir = pathlib.Path(
         checkpoint.parent.parent,
-        checkpoint.parent.stem.replace("_waymo", "") + "_tdt4265"
+        checkpoint.parent.stem.replace("_waymo", "") + "_tdt4265_run2"
     )
     # Copy new checkpoint
     new_dir.mkdir()
