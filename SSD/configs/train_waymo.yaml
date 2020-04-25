@@ -6,7 +6,7 @@ MODEL:
         OUT_CHANNELS:  [1024,512,512,256,256,128]  # resnet50_wide (512 på nr 2)
         INPUT_CHANNELS: 3
 INPUT:
-    IMAGE_SIZE: (480,640)
+    IMAGE_SIZE: (360,480)
 DATASETS:
     TRAIN: ("waymo_train",)
     TEST: ("waymo_val", )

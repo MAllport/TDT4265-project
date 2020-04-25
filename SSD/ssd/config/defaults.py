@@ -28,10 +28,10 @@ cfg.MODEL.BACKBONE.INPUT_CHANNELS = 3
 # PRIORS
 # -----------------------------------------------------------------------------
 cfg.MODEL.PRIORS = CN()
-cfg.MODEL.PRIORS.FEATURE_MAPS = [(60,80), (30,40), (16,20), (8,10), (4,6), (2,2)]
-cfg.MODEL.PRIORS.STRIDES = [16, 32, 64, 128, 200, 400]
-cfg.MODEL.PRIORS.MIN_SIZES = [60, 120, 222, 324, 426, 528]
-cfg.MODEL.PRIORS.MAX_SIZES = [120, 222, 324, 426, 528, 630]
+cfg.MODEL.PRIORS.FEATURE_MAPS = [(45,60), (22,30), (12,15), (6,8), (3,4), (2,2)]
+cfg.MODEL.PRIORS.STRIDES = [12, 24, 48, 96, 150, 300]
+cfg.MODEL.PRIORS.MIN_SIZES = [45, 90, 166, 243, 319, 396]
+cfg.MODEL.PRIORS.MAX_SIZES = [90, 166, 243, 319, 396, 472]
 cfg.MODEL.PRIORS.ASPECT_RATIOS = [[2], [2, 3], [2, 3], [2, 3], [2], [2]]
 # When has 1 aspect ratio, every location has 4 boxes, 2 ratio 6 boxes.
 # #boxes = 2 + #ratio * 2
@@ -50,7 +50,7 @@ cfg.MODEL.BOX_HEAD.PREDICTOR = 'SSDBoxPredictor'
 # -----------------------------------------------------------------------------
 cfg.INPUT = CN()
 # Image size
-cfg.INPUT.IMAGE_SIZE = (480,640)
+cfg.INPUT.IMAGE_SIZE = (360,480)
 # Values to be used for image normalization, RGB layout
 cfg.INPUT.PIXEL_MEAN = [123, 117, 104]
 
