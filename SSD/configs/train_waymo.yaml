@@ -15,11 +15,11 @@ DATASETS:
     TRAIN: ("waymo_train",)
     TEST: ("waymo_val", )
 SOLVER:
-    MAX_ITER: 20000
+    MAX_ITER: 80000
     LR_STEPS: [80000, 100000]
     GAMMA: 0.1
     BATCH_SIZE: 16
     LR: 1e-2
     WARMUP_ITERS: 1500
-OUTPUT_DIR: 'outputs/resnet34_expanded'
+OUTPUT_DIR: 'outputs/resnet34_expanded_fixed'
 DATASET_DIR: "/work/datasets"
