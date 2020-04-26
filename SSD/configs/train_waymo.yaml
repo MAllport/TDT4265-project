@@ -16,5 +16,5 @@ SOLVER:
     BATCH_SIZE: 16
     LR: 1e-2
     WARMUP_ITERS: 1500
-OUTPUT_DIR: 'outputs/resnet34_expfix_transform'
+OUTPUT_DIR: 'outputs/resnet34_crop'
 DATASET_DIR: "/work/datasets"
