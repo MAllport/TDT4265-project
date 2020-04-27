@@ -75,10 +75,6 @@ class Resnet34(torch.nn.Module):
         # Skip maxpool
         resnet.maxpool = Identity()
 
-        # Extra stuff, probably unnecessary
-        # conv3x3(128, 128),
-        # bnorm(128)
-
         # ResNet34 layers 1-4
         self.bank1 = nn.Sequential(
             # Layers 1-2
