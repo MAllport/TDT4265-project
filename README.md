@@ -38,6 +38,6 @@ For the backbone we use a ResNet-34 (pretrained on ImageNet), with some modifica
 | Additional layer of two BasicBlocks (first downsampling)        | Feature bank 4 (256 x 5 x 5)   |
 | Additional layer of two BasicBlocks (first downsampling)        | Feature bank 5 (256 x 3 x 3)   |
 | Additional layer of two BasicBlocks (first downsampling)        |                                |
-| Conv2d(3, 64) kernel 3x3, stride 2x2, padding 1x1               |                                |
+| Conv2d(128, 128) kernel 3x3, stride 2x2, padding 1x1               |                                |
 | BatchNorm2d(128)                                                |                                |
 | ReLU                                                            | Feature bank 6 (128 x 1 x 1)   |
